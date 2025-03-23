@@ -220,7 +220,7 @@ const FeatureSelector = ({
         step={gallerySectionConfig.renderOptions.rangeConfig.sliderStep}
         maxValue={gallerySectionConfig.renderOptions.rangeConfig.max}
         minValue={gallerySectionConfig.renderOptions.rangeConfig.min}
-        defaultValue={0.4}
+        defaultValue={gallerySectionConfig.defaultValue}
         value={inputValue}
         onChange={(val) => onChange(val as number)}></Slider>
     );

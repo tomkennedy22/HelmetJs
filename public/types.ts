@@ -33,20 +33,22 @@ type GallerySectionConfigBase = {
 export type GallerySectionConfigRange = GallerySectionConfigBase & {
   selectionType: "range";
   selectedValue: number;
+  defaultValue?: number;
   renderOptions: {
     rangeConfig: {
       min: number;
       max: number;
       step: number;
       sliderStep: number;
+      numSteps?: number;
     };
-    valuesToRender: number[];
   };
 };
 
 export type GallerySectionConfigColor = GallerySectionConfigBase & {
   selectionType: "color";
   selectedValue: string;
+  defaultValue?: string;
   colorFormat: ColorFormat;
   renderOptions: {
     valuesToRender: string[];
@@ -56,6 +58,7 @@ export type GallerySectionConfigColor = GallerySectionConfigBase & {
 export type GallerySectionConfigColors = GallerySectionConfigBase & {
   selectionType: "colors";
   selectedValue: string[];
+  defaultValue?: string[];
   colorFormat: ColorFormat;
   renderOptions: {
     colorCount: number;
@@ -66,16 +69,19 @@ export type GallerySectionConfigColors = GallerySectionConfigBase & {
 export type GallerySectionConfigText = GallerySectionConfigBase & {
   selectionType: "text";
   selectedValue: string;
+  defaultValue?: string;
 };
 
 export type GallerySectionConfigToggle = GallerySectionConfigBase & {
   selectionType: "toggle";
   selectedValue: boolean;
+  defaultValue?: boolean;
 };
 
 export type GallerySectionConfigOptions = GallerySectionConfigBase & {
   selectionType: "options";
   selectedValue: string;
+  defaultValue?: string;
   renderOptions: {
     valuesToRender: Readonly<string[]>;
   };

@@ -12,7 +12,7 @@ import {
   Overrides,
 } from "./types";
 import { getProperty, setProperty } from "dot-prop";
-import { generateRangeFromStep, roundTwoDecimals } from "./utils";
+import { roundTwoDecimals } from "./utils";
 
 const gallerySectionInfos: (Pick<
   GallerySectionConfig,
@@ -22,6 +22,7 @@ const gallerySectionInfos: (Pick<
     | {
         selectionType: "color";
         colorFormat: "rgba" | "hex";
+        defaultValue?: string;
         renderOptions: {
           valuesToRender: string[];
         };
@@ -29,6 +30,7 @@ const gallerySectionInfos: (Pick<
     | {
         selectionType: "colors";
         colorFormat: "rgba" | "hex";
+        defaultValue?: string[];
         renderOptions: {
           colorCount: number;
           valuesToRender: string[][];
@@ -36,24 +38,30 @@ const gallerySectionInfos: (Pick<
       }
     | {
         selectionType: "range";
+        defaultValue?: number;
         renderOptions: {
           rangeConfig: {
             min: number;
             max: number;
+            numSteps?: number;
+            step?: number;
           };
         };
       }
     | {
         selectionType: "options";
+        defaultValue?: string;
         renderOptions: {
           valuesToRender: Readonly<string[]>;
         };
       }
     | {
         selectionType: "text";
+        defaultValue?: string;
       }
     | {
         selectionType: "toggle";
+        defaultValue?: boolean;
       }
   ))[] = [
   {
@@ -78,6 +86,7 @@ const gallerySectionInfos: (Pick<
     key: "helmetStyle",
     text: "Helmet Style",
     selectionType: "options",
+    defaultValue: "Standard",
     renderOptions: {
       valuesToRender: helmetStyles,
     },
@@ -135,6 +144,7 @@ const gallerySectionInfos: (Pick<
     key: "flipLogoWithHelmet",
     text: "Flip Logo With Helmet",
     selectionType: "toggle",
+    defaultValue: true,
     enableDisplayFn: (helmetConfig: HelmetConfig) => !helmetConfig.disableLogo,
   },
   {
@@ -153,10 +163,12 @@ const gallerySectionInfos: (Pick<
     key: "helmetLogoScale",
     text: "Helmet Logo Scale",
     selectionType: "range",
+    defaultValue: 1,
     renderOptions: {
       rangeConfig: {
         min: 0.5,
         max: 2,
+        step: 0.1,
       },
     },
     enableDisplayFn: (helmetConfig: HelmetConfig) => !helmetConfig.disableLogo,
@@ -165,10 +177,12 @@ const gallerySectionInfos: (Pick<
     key: "xAdjust",
     text: "Logo X Adjust",
     selectionType: "range",
+    defaultValue: 0,
     renderOptions: {
       rangeConfig: {
         min: -100,
         max: 100,
+        step: 1,
       },
     },
     enableDisplayFn: (helmetConfig: HelmetConfig) => !helmetConfig.disableLogo,
@@ -177,10 +191,12 @@ const gallerySectionInfos: (Pick<
     key: "yAdjust",
     text: "Logo Y Adjust",
     selectionType: "range",
+    defaultValue: 0,
     renderOptions: {
       rangeConfig: {
         min: -100,
         max: 100,
+        step: 1,
       },
     },
     enableDisplayFn: (helmetConfig: HelmetConfig) => !helmetConfig.disableLogo,
@@ -193,14 +209,19 @@ const gallerySectionConfigList: GallerySectionConfig[] =
       const rangeConfig = gallerySectionConfig.renderOptions.rangeConfig;
 
       const range = rangeConfig.max - rangeConfig.min;
-      const step = roundTwoDecimals(range / 4);
-      const sliderStep = Math.max(roundTwoDecimals(range / 35), 0.01);
+      const numSteps =
+        rangeConfig.numSteps ||
+        (rangeConfig.step ? Math.ceil(range / rangeConfig.step) : 35);
+      const step = rangeConfig.step || roundTwoDecimals(range / numSteps);
+      const sliderStep = Math.max(roundTwoDecimals(range / numSteps), 0.01);
 
-      const valuesToRender = generateRangeFromStep(
-        rangeConfig.min,
-        rangeConfig.max,
-        step
-      );
+      console.log("Range", {
+        step,
+        sliderStep,
+        rangeConfig,
+        numSteps,
+        gallerySectionConfig,
+      });
 
       return {
         ...gallerySectionConfig,
@@ -211,14 +232,13 @@ const gallerySectionConfigList: GallerySectionConfig[] =
             step,
             sliderStep,
           },
-          valuesToRender,
         },
-        selectedValue: rangeConfig.min,
+        selectedValue: gallerySectionConfig.defaultValue || rangeConfig.min,
       };
     } else if (gallerySectionConfig.selectionType === "color") {
       return {
         ...gallerySectionConfig,
-        selectedValue: "???",
+        selectedValue: gallerySectionConfig.defaultValue || "#000",
       };
     } else if (gallerySectionConfig.selectionType === "colors") {
       return {
@@ -230,18 +250,19 @@ const gallerySectionConfigList: GallerySectionConfig[] =
     } else if (gallerySectionConfig.selectionType === "options") {
       return {
         ...gallerySectionConfig,
-        // selectedValue: gallerySectionConfig.renderOptions.valuesToRender[0],
-        selectedValue: gallerySectionConfig.renderOptions.valuesToRender[0],
+        selectedValue:
+          gallerySectionConfig.defaultValue ||
+          gallerySectionConfig.renderOptions.valuesToRender[0],
       };
     } else if (gallerySectionConfig.selectionType === "text") {
       return {
         ...gallerySectionConfig,
-        selectedValue: "",
+        selectedValue: gallerySectionConfig.defaultValue || "",
       };
     } else if (gallerySectionConfig.selectionType === "toggle") {
       return {
         ...gallerySectionConfig,
-        selectedValue: false,
+        selectedValue: gallerySectionConfig.defaultValue || false,
       };
     } else {
       return gallerySectionConfig;
@@ -265,10 +286,7 @@ const generateInitialHelmetConfig = () => {
   let helmetConfig: HelmetConfig;
   if (location.hash.length <= 1) {
     helmetConfig = generateHelmetConfigFromOverrides({
-      helmetConfigOverrides: {
-        helmetColor: "#f00",
-        facemaskColor: "#fff",
-      },
+      helmetConfigOverrides: {},
     });
   } else {
     try {
@@ -276,10 +294,7 @@ const generateInitialHelmetConfig = () => {
     } catch (error) {
       console.error(error);
       helmetConfig = generateHelmetConfigFromOverrides({
-        helmetConfigOverrides: {
-          helmetColor: "#f00",
-          facemaskColor: "#fff",
-        },
+        helmetConfigOverrides: {},
       });
     }
   }
@@ -329,7 +344,7 @@ export const getOverrideListForItem = (
   const overrideList: OverrideListItem[] = [];
 
   if (
-    gallerySectionConfig.selectionType === "range" ||
+    gallerySectionConfig.selectionType === "options" ||
     gallerySectionConfig.selectionType === "color" ||
     gallerySectionConfig.selectionType === "colors"
   ) {
