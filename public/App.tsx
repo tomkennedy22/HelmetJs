@@ -20,7 +20,12 @@ function App() {
 
   return (
     <div className="flex flex-col">
-      <div className="w-screen">Header</div>
+      <div className="w-screen bg-slate-900 mb-2 p-2 text-white flex justify-between">
+        <span>HelmetJs</span>
+        <span>
+          <a href="https://github.com/tomkennedy22/HelmetJs">Github</a>
+        </span>
+      </div>
       <div className="flex gap-2 justify-between w-screen">
         <div className="flex flex-col gap-2 flex-1">
           <div>
@@ -42,7 +47,7 @@ function App() {
           </div>
         </div>
         <div className="overflow-y-scroll flex-1">
-          <div className="rounded-md border-4 border-red-500 h-[80vh] overflow-hidden">
+          <div className="rounded-md border-4 border-red-500 h-[80vh] overflow-hidden flex justify-center">
             <TeamHelmet teamHelmetConfig={teamHelmetConfig} />
           </div>
         </div>
