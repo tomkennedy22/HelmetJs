@@ -6,9 +6,10 @@ export const distinct = <T>(arr: T[]): T[] => {
 
 export const roundTwoDecimals = (x: number) => Math.round(x * 100) / 100;
 
-export const luma = (colorHex: string): number => {
+export const luma = (colorHex: string): number | undefined => {
   if (!doesStrLookLikeColor(colorHex)) {
-    throw new Error("Invalid hexadecimal color");
+    console.error("Invalid color hex", colorHex);
+    return undefined;
   }
 
   // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")

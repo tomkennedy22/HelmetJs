@@ -222,16 +222,7 @@ const FeatureSelector = ({
         minValue={gallerySectionConfig.renderOptions.rangeConfig.min}
         defaultValue={0.4}
         value={inputValue}
-        onChange={(val) => onChange(val as number)}
-        // renderValue={({ children, ...props }) => (
-        //   <output {...props}>
-        //     <SliderOverrideInput
-        //       onChange={onChange}
-        //       value={inputValue}
-        //     />
-        //   </output>
-        // )}
-      ></Slider>
+        onChange={(val) => onChange(val as number)}></Slider>
     );
   } else if (
     gallerySectionConfig.selectionType == "color" ||
@@ -264,24 +255,18 @@ const FeatureSelector = ({
       hasMultipleColors: boolean;
       colorIndex: number;
     }) => {
-      updateValidationAtIndex(colorIndex, doesStrLookLikeColor(newColorValue));
-
+      const colorLooksValid = doesStrLookLikeColor(newColorValue);
       console.log("colorInputOnChange", {
         newColorValue,
         hasMultipleColors,
         colorIndex,
+        colorLooksValid,
       });
 
-      // let chosenValue = getProperty(helmetConfig, gallerySectionConfig.key);
+      updateValidationAtIndex(colorIndex, doesStrLookLikeColor(newColorValue));
+
       setProperty(helmetConfig, gallerySectionConfig.key, newColorValue);
       const chosenValue = getProperty(helmetConfig, gallerySectionConfig.key);
-      // if (chosenValue) {
-      //   if (hasMultipleColors) {
-      //     chosenValue[colorIndex] = newColorValue;
-      //   } else {
-      //     chosenValue = newColorValue;
-      //   }
-      // }
 
       inputOnChange({
         chosenValue,
@@ -368,21 +353,25 @@ function App() {
     <div className="flex flex-col h-screen">
       <TopBar />
       <div className="flex gap-8 w-screen mt-16 px-8">
-        <div className="w-full flex-1 flex flex-col overflow-y-scroll max-h-[90lvh]">
+        <div className="w-full flex-1 overflow-y-scroll max-h-[90lvh] h-min grid grid-cols-2">
           {gallerySectionConfigList.map(
             (gallerySectionConfig, sectionIndex) => {
               const overrideList = getOverrideListForItem(gallerySectionConfig);
 
+              if (gallerySectionConfig.enableDisplayFn) {
+                const shouldDisplay =
+                  gallerySectionConfig.enableDisplayFn(helmetConfig);
+                if (!shouldDisplay) {
+                  return null;
+                }
+              }
+
               return (
                 <div
                   key={sectionIndex}
-                  className={`${
-                    sectionIndex === 0
-                      ? "pb-6"
-                      : "py-6 border-t-2 border-t-slate-400"
-                  }`}>
-                  <div className="m-1 flex gap-4 justify-between items-center">
-                    <div className="mb-2 flex justify-end grow">
+                  className={"py-6 border-b-1 border-slate-400 content-center"}>
+                  <div className="m-1 flex gap-4 justify-between">
+                    <div className="mb-2 flex justify-start grow">
                       <FeatureSelector
                         gallerySectionConfig={gallerySectionConfig}
                         overrideList={overrideList}
@@ -400,8 +389,6 @@ function App() {
                         const selected =
                           gallerySectionConfig.selectedValue ==
                           overrideToRun.value;
-
-                        // const helmetWidth = gallerySize == "md" ? 100 : 150;
 
                         return (
                           <div

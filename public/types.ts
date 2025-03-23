@@ -27,6 +27,7 @@ type GallerySectionConfigBase = {
   key: string;
   text: string;
   isSelected?: boolean;
+  enableDisplayFn?: (helmetConfig: HelmetConfig) => boolean;
 };
 
 export type GallerySectionConfigRange = GallerySectionConfigBase & {

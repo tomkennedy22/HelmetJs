@@ -16,7 +16,7 @@ import { generateRangeFromStep, roundTwoDecimals } from "./utils";
 
 const gallerySectionInfos: (Pick<
   GallerySectionConfig,
-  "key" | "text" | "isSelected"
+  "key" | "text" | "isSelected" | "enableDisplayFn"
 > &
   (
     | {
@@ -57,19 +57,6 @@ const gallerySectionInfos: (Pick<
       }
   ))[] = [
   {
-    key: "flipHelmet",
-    text: "Flip Helmet",
-    selectionType: "toggle",
-  },
-  {
-    key: "helmetStyle",
-    text: "Helmet Style",
-    selectionType: "options",
-    renderOptions: {
-      valuesToRender: helmetStyles,
-    },
-  },
-  {
     key: "helmetColor",
     text: "Helmet Color",
     selectionType: "color",
@@ -88,6 +75,47 @@ const gallerySectionInfos: (Pick<
     },
   },
   {
+    key: "helmetStyle",
+    text: "Helmet Style",
+    selectionType: "options",
+    renderOptions: {
+      valuesToRender: helmetStyles,
+    },
+  },
+  {
+    key: "tigerStripeColor",
+    text: "Tiger Stripe Color",
+    selectionType: "color",
+    colorFormat: "hex",
+    renderOptions: {
+      valuesToRender: ["#f00", "#0f0", "#00f"],
+    },
+    enableDisplayFn: (helmetConfig: HelmetConfig) =>
+      helmetConfig.helmetStyle === "Tiger Stripe",
+  },
+  {
+    key: "wingColor",
+    text: "Wing Color",
+    selectionType: "color",
+    colorFormat: "hex",
+    renderOptions: {
+      valuesToRender: ["#f00", "#0f0", "#00f"],
+    },
+    enableDisplayFn: (helmetConfig: HelmetConfig) =>
+      helmetConfig.helmetStyle === "Wing",
+  },
+  {
+    key: "hornColor",
+    text: "Horn Color",
+    selectionType: "color",
+    colorFormat: "hex",
+    renderOptions: {
+      valuesToRender: ["#f00", "#0f0", "#00f"],
+    },
+    enableDisplayFn: (helmetConfig: HelmetConfig) =>
+      helmetConfig.helmetStyle === "Horn",
+  },
+  {
     key: "disableLogo",
     text: "Disable Logo",
     selectionType: "toggle",
@@ -96,21 +124,30 @@ const gallerySectionInfos: (Pick<
     key: "helmetLogoUrl",
     text: "Helmet Logo URL",
     selectionType: "text",
+    enableDisplayFn: (helmetConfig: HelmetConfig) => !helmetConfig.disableLogo,
+  },
+  {
+    key: "flipHelmet",
+    text: "Flip Helmet",
+    selectionType: "toggle",
   },
   {
     key: "flipLogoWithHelmet",
     text: "Flip Logo With Helmet",
     selectionType: "toggle",
+    enableDisplayFn: (helmetConfig: HelmetConfig) => !helmetConfig.disableLogo,
   },
   {
     key: "useFlippedLogoUrlWhenFlipped",
     text: "Use Flipped Logo URL When Flipped",
     selectionType: "toggle",
+    enableDisplayFn: (helmetConfig: HelmetConfig) => !helmetConfig.disableLogo,
   },
   {
     key: "flippedHelmetLogoUrl",
     text: "Flipped Helmet Logo URL",
     selectionType: "text",
+    enableDisplayFn: (helmetConfig: HelmetConfig) => !helmetConfig.disableLogo,
   },
   {
     key: "helmetLogoScale",
@@ -122,6 +159,7 @@ const gallerySectionInfos: (Pick<
         max: 2,
       },
     },
+    enableDisplayFn: (helmetConfig: HelmetConfig) => !helmetConfig.disableLogo,
   },
   {
     key: "xAdjust",
@@ -133,6 +171,7 @@ const gallerySectionInfos: (Pick<
         max: 100,
       },
     },
+    enableDisplayFn: (helmetConfig: HelmetConfig) => !helmetConfig.disableLogo,
   },
   {
     key: "yAdjust",
@@ -144,33 +183,7 @@ const gallerySectionInfos: (Pick<
         max: 100,
       },
     },
-  },
-  {
-    key: "tigerStripeColor",
-    text: "Tiger Stripe Color",
-    selectionType: "color",
-    colorFormat: "hex",
-    renderOptions: {
-      valuesToRender: ["#f00", "#0f0", "#00f"],
-    },
-  },
-  {
-    key: "wingColor",
-    text: "Wing Color",
-    selectionType: "color",
-    colorFormat: "hex",
-    renderOptions: {
-      valuesToRender: ["#f00", "#0f0", "#00f"],
-    },
-  },
-  {
-    key: "hornColor",
-    text: "Horn Color",
-    selectionType: "color",
-    colorFormat: "hex",
-    renderOptions: {
-      valuesToRender: ["#f00", "#0f0", "#00f"],
-    },
+    enableDisplayFn: (helmetConfig: HelmetConfig) => !helmetConfig.disableLogo,
   },
 ];
 

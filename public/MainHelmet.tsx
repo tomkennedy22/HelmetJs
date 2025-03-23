@@ -33,7 +33,7 @@ const MainHelmetActionBar = ({
   const { helmetConfig } = useHelmetStore();
 
   const helmetColor = helmetConfig.helmetColor;
-  const helmetLuma = luma(helmetColor);
+  const helmetLuma = luma(helmetColor) || 0;
 
   const acceptableBackgroundColor =
     helmetLuma < 0.6 ? helmetConfig.helmetColor : "black";
@@ -43,13 +43,6 @@ const MainHelmetActionBar = ({
     helmetLuma,
     acceptableBackgroundColor,
   });
-
-  // console.log("MainHelmetActionBar", {
-  //   helmetConfig,
-  //   helmetRef,
-  //   uploadModalDisclosure,
-  //   compareModalDisclosure,
-  // });
 
   const dropdownConfig = [
     {

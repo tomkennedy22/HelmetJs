@@ -1,8 +1,8 @@
 export const helmetStyles = [
-  "standard",
-  "tiger-stripes",
-  "winged",
-  "horned",
+  "Standard",
+  "Tiger Stripe",
+  "Wing",
+  "Horn",
 ] as const;
 const baseColor = "#f00";
 const darkColor = "#272727";
@@ -52,7 +52,7 @@ export const generateHelmetConfigFromOverrides = ({
       helmetConfigOverrides?.useFlippedLogoUrlWhenFlipped || false,
     flippedHelmetLogoUrl:
       helmetConfigOverrides?.flippedHelmetLogoUrl || undefined,
-    helmetStyle: helmetConfigOverrides?.helmetStyle || "standard",
+    helmetStyle: helmetConfigOverrides?.helmetStyle || "Standard",
     tigerStripeColor: helmetConfigOverrides?.tigerStripeColor || darkColor,
     wingColor: helmetConfigOverrides?.wingColor || darkColor,
     hornColor: helmetConfigOverrides?.hornColor || darkColor,
