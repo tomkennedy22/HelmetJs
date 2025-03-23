@@ -368,7 +368,7 @@ function App() {
     stateStoreProps;
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen bg-green-200">
       <TopBar />
       <div className="flex gap-8 w-screen mt-16 px-8">
         <div className="w-full flex flex-col overflow-y-scroll max-h-[90lvh]">
