@@ -1,4 +1,4 @@
-import { Input, Select, SelectItem, Slider } from "@heroui/react";
+import { Input, Select, SelectItem, Slider, Switch } from "@heroui/react";
 import {
   generateTeamHelmetConfigFromOverrides,
   TeamHelmet,
@@ -8,7 +8,12 @@ import { getOverrideListForItem, useHelmetStore } from "./helmetState";
 import { TopBar } from "./TopBar";
 import { ColorPicker } from "./ColorPicker";
 import { getProperty, setProperty } from "dot-prop";
-import { CombinedState, GallerySectionConfig, OverrideListItem } from "./types";
+import {
+  CombinedState,
+  GallerySectionConfig,
+  GallerySectionConfigOptions,
+  OverrideListItem,
+} from "./types";
 import { useState } from "react";
 import {
   deepCopy,
@@ -106,32 +111,86 @@ const FeatureSelector = ({
   );
 
   if (gallerySectionConfig.selectionType === "options") {
+    console.log("options", {
+      gallerySectionConfig,
+      selectedVal,
+      teamHelmetConfig,
+    });
+
+    const optionsGallerySectionConfig =
+      gallerySectionConfig as GallerySectionConfigOptions;
+
     return (
       <div
         key={sectionIndex}
         className="w-full max-w-md flex gap-4">
         <Select
-          label={gallerySectionConfig.text}
-          selectedKeys={[gallerySectionConfig.selectedValue]}
+          label={optionsGallerySectionConfig.text}
+          selectedKeys={[optionsGallerySectionConfig.selectedValue]}
           onChange={(e) => {
             const chosenValue = e.target.value;
             inputOnChange({
               chosenValue,
               teamHelmetConfig,
-              key: gallerySectionConfig.key,
+              key: optionsGallerySectionConfig.key,
               overrideList,
               stateStoreProps,
             });
           }}>
-          {overrideList.map((overrideToRun) => {
-            return (
-              <SelectItem key={String(overrideToRun.value)}>
-                {overrideToRun.value}
-              </SelectItem>
-            );
-          })}
+          {optionsGallerySectionConfig.renderOptions.valuesToRender.map(
+            (optionValue) => {
+              console.log("overrideToRun", {
+                optionValue,
+                overrideList,
+                optionsGallerySectionConfig,
+              });
+              return (
+                <SelectItem key={String(optionValue)}>{optionValue}</SelectItem>
+              );
+            }
+          )}
         </Select>
       </div>
+    );
+  } else if (gallerySectionConfig.selectionType === "toggle") {
+    const inputValue = selectedVal as boolean;
+
+    return (
+      <Switch
+        key={sectionIndex}
+        checked={inputValue}
+        onChange={(e) => {
+          const chosenValue = e.target.checked;
+          inputOnChange({
+            chosenValue,
+            teamHelmetConfig,
+            key: gallerySectionConfig.key,
+            overrideList,
+            stateStoreProps,
+          });
+        }}>
+        {gallerySectionConfig.text}
+      </Switch>
+    );
+  } else if (gallerySectionConfig.selectionType === "text") {
+    const inputValue = selectedVal as string;
+
+    return (
+      <Input
+        key={sectionIndex}
+        label={gallerySectionConfig.text}
+        value={inputValue}
+        onChange={(e) => {
+          const chosenValue = e.target.value;
+          inputOnChange({
+            chosenValue,
+            teamHelmetConfig,
+            key: gallerySectionConfig.key,
+            overrideList,
+            stateStoreProps,
+          });
+        }}
+      />
     );
   } else if (gallerySectionConfig.selectionType === "range") {
     const inputValue = (selectedVal as number) || 0;

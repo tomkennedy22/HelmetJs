@@ -10,6 +10,7 @@ const darkColor = "#272727";
 type TeamHelmetStyle = (typeof teamHelmetStyles)[number];
 
 type TeamHelmetConfigBase = {
+  flipHelmet: boolean;
   helmetColor: string;
   facemaskColor: string;
   helmetLogoUrl?: string;
@@ -39,6 +40,7 @@ export const generateTeamHelmetConfigFromOverrides = ({
   teamHelmetConfigOverrides: TeamHelmetConfigOverrides;
 }): TeamHelmetConfig => {
   const teamHelmetConfig: TeamHelmetConfig = {
+    flipHelmet: teamHelmetConfigOverrides?.flipHelmet || false,
     helmetColor: teamHelmetConfigOverrides?.helmetColor || baseColor,
     facemaskColor: teamHelmetConfigOverrides?.facemaskColor || darkColor,
     helmetLogoUrl: teamHelmetConfigOverrides?.helmetLogoUrl || undefined,

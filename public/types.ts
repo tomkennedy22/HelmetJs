@@ -27,10 +27,9 @@ type GallerySectionConfigBase = {
   key: string;
   text: string;
   isSelected?: boolean;
-  randomizeEnabled: boolean;
 };
 
-type GallerySectionConfigRange = GallerySectionConfigBase & {
+export type GallerySectionConfigRange = GallerySectionConfigBase & {
   selectionType: "range";
   selectedValue: number;
   renderOptions: {
@@ -44,7 +43,7 @@ type GallerySectionConfigRange = GallerySectionConfigBase & {
   };
 };
 
-type GallerySectionConfigColor = GallerySectionConfigBase & {
+export type GallerySectionConfigColor = GallerySectionConfigBase & {
   selectionType: "color";
   selectedValue: string;
   colorFormat: ColorFormat;
@@ -53,7 +52,7 @@ type GallerySectionConfigColor = GallerySectionConfigBase & {
   };
 };
 
-type GallerySectionConfigColors = GallerySectionConfigBase & {
+export type GallerySectionConfigColors = GallerySectionConfigBase & {
   selectionType: "colors";
   selectedValue: string[];
   colorFormat: ColorFormat;
@@ -63,15 +62,30 @@ type GallerySectionConfigColors = GallerySectionConfigBase & {
   };
 };
 
-type GallerySectionConfigOptions = GallerySectionConfigBase & {
+export type GallerySectionConfigText = GallerySectionConfigBase & {
+  selectionType: "text";
+  selectedValue: string;
+};
+
+export type GallerySectionConfigToggle = GallerySectionConfigBase & {
+  selectionType: "toggle";
+  selectedValue: boolean;
+};
+
+export type GallerySectionConfigOptions = GallerySectionConfigBase & {
   selectionType: "options";
   selectedValue: string;
+  renderOptions: {
+    valuesToRender: Readonly<string[]>;
+  };
 };
 
 export type GallerySectionConfig =
   | GallerySectionConfigRange
   | GallerySectionConfigColor
   | GallerySectionConfigColors
+  | GallerySectionConfigText
+  | GallerySectionConfigToggle
   | GallerySectionConfigOptions;
 
 export type CombinedState = HelmetState & GalleryState;

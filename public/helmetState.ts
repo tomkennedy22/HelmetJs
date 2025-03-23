@@ -2,6 +2,7 @@ import { create } from "zustand";
 import {
   generateTeamHelmetConfigFromOverrides,
   TeamHelmetConfig,
+  teamHelmetStyles,
 } from "../src";
 import {
   CombinedState,
@@ -44,8 +45,30 @@ const gallerySectionInfos: (Pick<
       }
     | {
         selectionType: "options";
+        renderOptions: {
+          valuesToRender: Readonly<string[]>;
+        };
+      }
+    | {
+        selectionType: "text";
+      }
+    | {
+        selectionType: "toggle";
       }
   ))[] = [
+  {
+    key: "flipHelmet",
+    text: "Flip Helmet",
+    selectionType: "toggle",
+  },
+  {
+    key: "helmetStyle",
+    text: "Helmet Style",
+    selectionType: "options",
+    renderOptions: {
+      valuesToRender: teamHelmetStyles,
+    },
+  },
   {
     key: "helmetColor",
     text: "Helmet Color",
@@ -65,14 +88,88 @@ const gallerySectionInfos: (Pick<
     },
   },
   {
+    key: "disableLogo",
+    text: "Disable Logo",
+    selectionType: "toggle",
+  },
+  {
+    key: "helmetLogoUrl",
+    text: "Helmet Logo URL",
+    selectionType: "text",
+  },
+  {
+    key: "flipLogoWithHelmet",
+    text: "Flip Logo With Helmet",
+    selectionType: "toggle",
+  },
+  {
+    key: "useFlippedLogoUrlWhenFlipped",
+    text: "Use Flipped Logo URL When Flipped",
+    selectionType: "toggle",
+  },
+  {
+    key: "flippedHelmetLogoUrl",
+    text: "Flipped Helmet Logo URL",
+    selectionType: "text",
+  },
+  {
     key: "helmetLogoScale",
-    text: "helmetLogoScale",
+    text: "Helmet Logo Scale",
     selectionType: "range",
     renderOptions: {
       rangeConfig: {
         min: 0.5,
         max: 2,
       },
+    },
+  },
+  {
+    key: "xAdjust",
+    text: "Logo X Adjust",
+    selectionType: "range",
+    renderOptions: {
+      rangeConfig: {
+        min: -100,
+        max: 100,
+      },
+    },
+  },
+  {
+    key: "yAdjust",
+    text: "Logo Y Adjust",
+    selectionType: "range",
+    renderOptions: {
+      rangeConfig: {
+        min: -100,
+        max: 100,
+      },
+    },
+  },
+  {
+    key: "tigerStripeColor",
+    text: "Tiger Stripe Color",
+    selectionType: "color",
+    colorFormat: "hex",
+    renderOptions: {
+      valuesToRender: ["#f00", "#0f0", "#00f"],
+    },
+  },
+  {
+    key: "wingColor",
+    text: "Wing Color",
+    selectionType: "color",
+    colorFormat: "hex",
+    renderOptions: {
+      valuesToRender: ["#f00", "#0f0", "#00f"],
+    },
+  },
+  {
+    key: "hornColor",
+    text: "Horn Color",
+    selectionType: "color",
+    colorFormat: "hex",
+    renderOptions: {
+      valuesToRender: ["#f00", "#0f0", "#00f"],
     },
   },
 ];
@@ -103,29 +200,38 @@ const gallerySectionConfigList: GallerySectionConfig[] =
           },
           valuesToRender,
         },
-        randomizeEnabled: true,
         selectedValue: rangeConfig.min,
       };
     } else if (gallerySectionConfig.selectionType === "color") {
       return {
         ...gallerySectionConfig,
-        randomizeEnabled: true,
         selectedValue: "???",
       };
     } else if (gallerySectionConfig.selectionType === "colors") {
       return {
         ...gallerySectionConfig,
-        randomizeEnabled: true,
         selectedValue: Array(
           gallerySectionConfig.renderOptions.colorCount
         ).fill("#000000"),
       };
-    } else {
+    } else if (gallerySectionConfig.selectionType === "options") {
       return {
         ...gallerySectionConfig,
-        randomizeEnabled: true,
-        selectedValue: "???",
+        // selectedValue: gallerySectionConfig.renderOptions.valuesToRender[0],
+        selectedValue: gallerySectionConfig.renderOptions.valuesToRender[0],
       };
+    } else if (gallerySectionConfig.selectionType === "text") {
+      return {
+        ...gallerySectionConfig,
+        selectedValue: "",
+      };
+    } else if (gallerySectionConfig.selectionType === "toggle") {
+      return {
+        ...gallerySectionConfig,
+        selectedValue: false,
+      };
+    } else {
+      return gallerySectionConfig;
     }
   });
 
@@ -146,12 +252,32 @@ const updateUrlHash = (teamHelmetConfig: TeamHelmetConfig) => {
   );
 };
 
-const initialHelmetConfig = generateTeamHelmetConfigFromOverrides({
-  teamHelmetConfigOverrides: {
-    helmetColor: "#f00",
-    facemaskColor: "#fff",
-  },
-});
+const generateInitialHelmetConfig = () => {
+  let helmetConfig: TeamHelmetConfig;
+  if (location.hash.length <= 1) {
+    helmetConfig = generateTeamHelmetConfigFromOverrides({
+      teamHelmetConfigOverrides: {
+        helmetColor: "#f00",
+        facemaskColor: "#fff",
+      },
+    });
+  } else {
+    try {
+      helmetConfig = JSON.parse(atob(location.hash.slice(1)));
+    } catch (error) {
+      console.error(error);
+      helmetConfig = generateTeamHelmetConfigFromOverrides({
+        teamHelmetConfigOverrides: {
+          helmetColor: "#f00",
+          facemaskColor: "#fff",
+        },
+      });
+    }
+  }
+  return helmetConfig;
+};
+
+const initialHelmetConfig = generateInitialHelmetConfig();
 applyValuesToGallerySectionConfigList(
   gallerySectionConfigList,
   initialHelmetConfig

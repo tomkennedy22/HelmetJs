@@ -7,7 +7,7 @@ export const TopBar = () => {
       <span className="hidden md:inline mr-4 ">HelmetJs editor</span>
       <Button
         as={"a"}
-        className="rounded-md"
+        className="rounded-md text-white"
         variant="bordered"
         href="https://github.com/tomkennedy22/HelmetJs">
         <GithubLogo
