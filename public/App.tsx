@@ -1,11 +1,4 @@
-import {
-  Input,
-  Select,
-  SelectItem,
-  Slider,
-  Switch,
-  useDisclosure,
-} from "@heroui/react";
+import { Input, Select, SelectItem, Slider, Switch } from "@heroui/react";
 import {
   generateHelmetConfigFromOverrides,
   Helmet,
@@ -367,8 +360,6 @@ const FeatureSelector = ({
 
 function App() {
   const stateStoreProps = useHelmetStore();
-  const uploadModalDisclosure = useDisclosure();
-  const compareModalDisclosure = useDisclosure();
 
   const { helmetConfig, gallerySize, gallerySectionConfigList } =
     stateStoreProps;
@@ -449,11 +440,7 @@ function App() {
             }
           )}
         </div>
-        <MainHelmet
-          className="flex-1"
-          uploadModalDisclosure={uploadModalDisclosure}
-          compareModalDisclosure={compareModalDisclosure}
-        />
+        <MainHelmet className="flex-1" />
       </div>
     </div>
   );

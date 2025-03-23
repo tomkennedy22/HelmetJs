@@ -7,7 +7,6 @@ import {
   DropdownMenu,
   DropdownTrigger,
   DropdownItem,
-  type useDisclosure,
   CardBody,
   Card,
   CardFooter,
@@ -20,7 +19,7 @@ import {
 } from "./downloadHelmet";
 import { useHelmetStore } from "./helmetState";
 import { Helmet } from "../src";
-import { classNames } from "./utils";
+import { classNames, luma } from "./utils";
 
 const copyStringToClipboard = async (str: string) => {
   await navigator.clipboard.writeText(str);
@@ -28,21 +27,29 @@ const copyStringToClipboard = async (str: string) => {
 
 const MainHelmetActionBar = ({
   helmetRef,
-  uploadModalDisclosure,
-  compareModalDisclosure,
 }: {
   helmetRef: RefObject<HTMLDivElement | null> | null;
-  uploadModalDisclosure: ReturnType<typeof useDisclosure>;
-  compareModalDisclosure: ReturnType<typeof useDisclosure>;
 }) => {
   const { helmetConfig } = useHelmetStore();
 
-  console.log("MainHelmetActionBar", {
-    helmetConfig,
-    helmetRef,
-    uploadModalDisclosure,
-    compareModalDisclosure,
+  const helmetColor = helmetConfig.helmetColor;
+  const helmetLuma = luma(helmetColor);
+
+  const acceptableBackgroundColor =
+    helmetLuma < 0.6 ? helmetConfig.helmetColor : "black";
+
+  console.log("Colors", {
+    helmetColor,
+    helmetLuma,
+    acceptableBackgroundColor,
   });
+
+  // console.log("MainHelmetActionBar", {
+  //   helmetConfig,
+  //   helmetRef,
+  //   uploadModalDisclosure,
+  //   compareModalDisclosure,
+  // });
 
   const dropdownConfig = [
     {
@@ -101,21 +108,10 @@ const MainHelmetActionBar = ({
         },
       ],
     },
-    // {
-    //   groupName: "Upload",
-    //   groupIcon: <UploadSimple size={24} />,
-    //   baseAction: onUploadOpen,
-    // },
-    // {
-    //   groupName: "Compare",
-    //   groupIcon: <MagnifyingGlass size={24} />,
-    //   baseAction: onCompareOpen,
-    // },
   ];
 
   const buttonStyle = {
-    backgroundColor: helmetConfig.helmetColor,
-    // borderColor: helmetConfig.helmetColor,
+    backgroundColor: acceptableBackgroundColor,
   };
 
   return (
@@ -178,15 +174,7 @@ const MainHelmetActionBar = ({
   );
 };
 
-export const MainHelmet = ({
-  className,
-  uploadModalDisclosure,
-  compareModalDisclosure,
-}: {
-  className: string;
-  uploadModalDisclosure: ReturnType<typeof useDisclosure>;
-  compareModalDisclosure: ReturnType<typeof useDisclosure>;
-}) => {
+export const MainHelmet = ({ className }: { className: string }) => {
   const { helmetConfig } = useHelmetStore();
   const ref = useRef<HTMLDivElement>(null);
 
@@ -194,9 +182,8 @@ export const MainHelmet = ({
     <Card className="flex-1 h-[90vh]">
       <CardBody>
         <Helmet
-          className={classNames(className)}
+          className={(classNames(className), "h-[80%] w-[80%]")}
           helmetConfig={helmetConfig}
-          // style={{ borderColor: helmetConfig.helmetColor }}
           ref={ref}
         />
       </CardBody>
@@ -206,28 +193,8 @@ export const MainHelmet = ({
           borderColor: helmetConfig.helmetColor,
           backgroundColor: helmetConfig.helmetColor,
         }}>
-        <MainHelmetActionBar
-          uploadModalDisclosure={uploadModalDisclosure}
-          compareModalDisclosure={compareModalDisclosure}
-          helmetRef={ref}
-        />
+        <MainHelmetActionBar helmetRef={ref} />
       </CardFooter>
     </Card>
-    // <div className="flex flex-col gap-4 w-[50%]">
-    //   <Helmet
-    //     className={classNames(
-    //       className,
-    //       "border-5 rounded-lg shadow-medium h-[80%] w-fit"
-    //     )}
-    //     helmetConfig={helmetConfig}
-    //     style={{ borderColor: helmetConfig.helmetColor }}
-    //     ref={ref}
-    //   />
-    //   <MainHelmetActionBar
-    //     uploadModalDisclosure={uploadModalDisclosure}
-    //     compareModalDisclosure={compareModalDisclosure}
-    //     helmetRef={ref}
-    //   />
-    // </div>
   );
 };

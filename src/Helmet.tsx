@@ -107,8 +107,8 @@ export const Helmet = forwardRef<
       style={{
         ...style,
         aspectRatio: "1/1",
-        height: "inherit",
-        width: "inherit",
+        // height: "inherit",
+        // width: "inherit",
       }}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
