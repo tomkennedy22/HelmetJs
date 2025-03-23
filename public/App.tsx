@@ -368,10 +368,10 @@ function App() {
     stateStoreProps;
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-screen">
       <TopBar />
       <div className="flex gap-8 w-screen mt-16 px-8">
-        <div className="w-full flex flex-col overflow-hidden">
+        <div className="w-full flex flex-col overflow-y-scroll max-h-[90lvh]">
           {gallerySectionConfigList.map(
             (gallerySectionConfig, sectionIndex) => {
               const overrideList = getOverrideListForItem(gallerySectionConfig);
