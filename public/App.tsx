@@ -158,7 +158,9 @@ const FeatureSelector = ({
     return (
       <Switch
         key={sectionIndex}
-        checked={inputValue}
+        // checked={inputValue}
+        // defaultChecked={inputValue}
+        isSelected={inputValue}
         onChange={(e) => {
           const chosenValue = e.target.checked;
           inputOnChange({
