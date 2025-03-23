@@ -1,8 +1,15 @@
-import { Input, Select, SelectItem, Slider, Switch } from "@heroui/react";
 import {
-  generateTeamHelmetConfigFromOverrides,
-  TeamHelmet,
-  TeamHelmetConfig,
+  Input,
+  Select,
+  SelectItem,
+  Slider,
+  Switch,
+  useDisclosure,
+} from "@heroui/react";
+import {
+  generateHelmetConfigFromOverrides,
+  Helmet,
+  HelmetConfig,
 } from "../src";
 import { getOverrideListForItem, useHelmetStore } from "./helmetState";
 import { TopBar } from "./TopBar";
@@ -21,38 +28,39 @@ import {
   override,
   roundTwoDecimals,
 } from "./utils";
+import { MainHelmet } from "./MainHelmet";
 
 const updateStores = ({
-  teamHelmetConfig,
+  helmetConfig,
   stateStoreProps,
 }: {
-  teamHelmetConfig: TeamHelmetConfig;
+  helmetConfig: HelmetConfig;
   stateStoreProps: CombinedState;
   // overrideList: OverrideListItem[];
 }) => {
-  const { setTeamHelmetConfig } = stateStoreProps;
+  const { setHelmetConfig } = stateStoreProps;
 
-  setTeamHelmetConfig(teamHelmetConfig);
+  setHelmetConfig(helmetConfig);
 };
 
 const inputOnChange = ({
   chosenValue,
-  teamHelmetConfig,
+  helmetConfig,
   key,
   // overrideList,
   stateStoreProps,
 }: {
   chosenValue: unknown;
-  teamHelmetConfig: TeamHelmetConfig;
+  helmetConfig: HelmetConfig;
   key: string;
   overrideList: OverrideListItem[];
   stateStoreProps: CombinedState;
 }) => {
-  const teamHelmetConfigCopy = generateTeamHelmetConfigFromOverrides({
-    teamHelmetConfigOverrides: { ...teamHelmetConfig, [key]: chosenValue },
+  const helmetConfigCopy = generateHelmetConfigFromOverrides({
+    helmetConfigOverrides: { ...helmetConfig, [key]: chosenValue },
   });
   updateStores({
-    teamHelmetConfig: teamHelmetConfigCopy,
+    helmetConfig: helmetConfigCopy,
     stateStoreProps,
     // overrideList,
   });
@@ -98,14 +106,14 @@ const FeatureSelector = ({
   stateStoreProps: CombinedState;
   sectionIndex: number;
 }) => {
-  const { teamHelmetConfig } = stateStoreProps;
+  const { helmetConfig } = stateStoreProps;
 
   if (!gallerySectionConfig) {
     return <div>Select a feature</div>;
   }
 
   const selectedVal: string | number | boolean = getProperty(
-    teamHelmetConfig,
+    helmetConfig,
     gallerySectionConfig.key
   );
 
@@ -113,7 +121,7 @@ const FeatureSelector = ({
     console.log("options", {
       gallerySectionConfig,
       selectedVal,
-      teamHelmetConfig,
+      helmetConfig,
     });
 
     const optionsGallerySectionConfig =
@@ -130,7 +138,7 @@ const FeatureSelector = ({
             const chosenValue = e.target.value;
             inputOnChange({
               chosenValue,
-              teamHelmetConfig,
+              helmetConfig,
               key: optionsGallerySectionConfig.key,
               overrideList,
               stateStoreProps,
@@ -164,7 +172,7 @@ const FeatureSelector = ({
           const chosenValue = e.target.checked;
           inputOnChange({
             chosenValue,
-            teamHelmetConfig,
+            helmetConfig,
             key: gallerySectionConfig.key,
             overrideList,
             stateStoreProps,
@@ -185,7 +193,7 @@ const FeatureSelector = ({
           const chosenValue = e.target.value;
           inputOnChange({
             chosenValue,
-            teamHelmetConfig,
+            helmetConfig,
             key: gallerySectionConfig.key,
             overrideList,
             stateStoreProps,
@@ -200,7 +208,7 @@ const FeatureSelector = ({
       const chosenValue = roundTwoDecimals(newValue);
       inputOnChange({
         chosenValue,
-        teamHelmetConfig,
+        helmetConfig,
         key: gallerySectionConfig.key,
         overrideList,
         stateStoreProps,
@@ -271,12 +279,9 @@ const FeatureSelector = ({
         colorIndex,
       });
 
-      // let chosenValue = getProperty(teamHelmetConfig, gallerySectionConfig.key);
-      setProperty(teamHelmetConfig, gallerySectionConfig.key, newColorValue);
-      const chosenValue = getProperty(
-        teamHelmetConfig,
-        gallerySectionConfig.key
-      );
+      // let chosenValue = getProperty(helmetConfig, gallerySectionConfig.key);
+      setProperty(helmetConfig, gallerySectionConfig.key, newColorValue);
+      const chosenValue = getProperty(helmetConfig, gallerySectionConfig.key);
       // if (chosenValue) {
       //   if (hasMultipleColors) {
       //     chosenValue[colorIndex] = newColorValue;
@@ -287,7 +292,7 @@ const FeatureSelector = ({
 
       inputOnChange({
         chosenValue,
-        teamHelmetConfig,
+        helmetConfig,
         key: gallerySectionConfig.key,
         overrideList,
         stateStoreProps,
@@ -362,15 +367,17 @@ const FeatureSelector = ({
 
 function App() {
   const stateStoreProps = useHelmetStore();
+  const uploadModalDisclosure = useDisclosure();
+  const compareModalDisclosure = useDisclosure();
 
-  const { teamHelmetConfig, gallerySize, gallerySectionConfigList } =
+  const { helmetConfig, gallerySize, gallerySectionConfigList } =
     stateStoreProps;
 
   return (
     <div className="flex flex-col h-screen">
       <TopBar />
       <div className="flex gap-8 w-screen mt-16 px-8">
-        <div className="w-full flex flex-col overflow-y-scroll max-h-[90lvh]">
+        <div className="w-full flex-1 flex flex-col overflow-y-scroll max-h-[90lvh]">
           {gallerySectionConfigList.map(
             (gallerySectionConfig, sectionIndex) => {
               const overrideList = getOverrideListForItem(gallerySectionConfig);
@@ -414,25 +421,24 @@ function App() {
                                 : ""
                             }`}
                             onClick={() => {
-                              const teamHelmetConfigCopy =
-                                deepCopy(teamHelmetConfig);
+                              const helmetConfigCopy = deepCopy(helmetConfig);
 
                               console.log("set property", {
-                                teamHelmetConfigCopy,
+                                helmetConfigCopy,
                                 overrideToRun,
                               });
 
                               override(
-                                teamHelmetConfigCopy,
+                                helmetConfigCopy,
                                 overrideToRun.override
                               );
 
                               updateStores({
-                                teamHelmetConfig: teamHelmetConfigCopy,
+                                helmetConfig: helmetConfigCopy,
                                 stateStoreProps,
                               });
                             }}>
-                            <TeamHelmet teamHelmetConfig={teamHelmetConfig} />
+                            <Helmet helmetConfig={helmetConfig} />
                           </div>
                         );
                       })}
@@ -443,11 +449,11 @@ function App() {
             }
           )}
         </div>
-        <div
-          className="rounded-md border-4 h-[80vh]"
-          style={{ borderColor: teamHelmetConfig.helmetColor }}>
-          <TeamHelmet teamHelmetConfig={teamHelmetConfig} />
-        </div>
+        <MainHelmet
+          className="flex-1"
+          uploadModalDisclosure={uploadModalDisclosure}
+          compareModalDisclosure={compareModalDisclosure}
+        />
       </div>
     </div>
   );

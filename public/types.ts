@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { TeamHelmetConfig } from "../src";
+import { HelmetConfig } from "../src";
 
 export type GallerySize = "sm" | "md" | "lg";
 export type ColorFormat = "hex" | "rgba";
 
 export type HelmetState = {
-  teamHelmetConfig: TeamHelmetConfig;
-  setTeamHelmetConfig: (teamHelmetConfig: TeamHelmetConfig) => void;
+  helmetConfig: HelmetConfig;
+  setHelmetConfig: (helmetConfig: HelmetConfig) => void;
 };
 
 export type GalleryState = {

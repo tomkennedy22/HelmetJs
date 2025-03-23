@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import {
-  generateTeamHelmetConfigFromOverrides,
-  TeamHelmetConfig,
-  teamHelmetStyles,
+  generateHelmetConfigFromOverrides,
+  HelmetConfig,
+  helmetStyles,
 } from "../src";
 import {
   CombinedState,
@@ -66,7 +66,7 @@ const gallerySectionInfos: (Pick<
     text: "Helmet Style",
     selectionType: "options",
     renderOptions: {
-      valuesToRender: teamHelmetStyles,
+      valuesToRender: helmetStyles,
     },
   },
   {
@@ -237,26 +237,22 @@ const gallerySectionConfigList: GallerySectionConfig[] =
 
 const applyValuesToGallerySectionConfigList = (
   gallerySectionConfigList: GallerySectionConfig[],
-  teamHelmetConfig: TeamHelmetConfig
+  helmetConfig: HelmetConfig
 ) => {
   for (const row of gallerySectionConfigList) {
-    row.selectedValue = getProperty(teamHelmetConfig, row.key);
+    row.selectedValue = getProperty(helmetConfig, row.key);
   }
 };
 
-const updateUrlHash = (teamHelmetConfig: TeamHelmetConfig) => {
-  history.replaceState(
-    undefined,
-    "",
-    `#${btoa(JSON.stringify(teamHelmetConfig))}`
-  );
+const updateUrlHash = (helmetConfig: HelmetConfig) => {
+  history.replaceState(undefined, "", `#${btoa(JSON.stringify(helmetConfig))}`);
 };
 
 const generateInitialHelmetConfig = () => {
-  let helmetConfig: TeamHelmetConfig;
+  let helmetConfig: HelmetConfig;
   if (location.hash.length <= 1) {
-    helmetConfig = generateTeamHelmetConfigFromOverrides({
-      teamHelmetConfigOverrides: {
+    helmetConfig = generateHelmetConfigFromOverrides({
+      helmetConfigOverrides: {
         helmetColor: "#f00",
         facemaskColor: "#fff",
       },
@@ -266,8 +262,8 @@ const generateInitialHelmetConfig = () => {
       helmetConfig = JSON.parse(atob(location.hash.slice(1)));
     } catch (error) {
       console.error(error);
-      helmetConfig = generateTeamHelmetConfigFromOverrides({
-        teamHelmetConfigOverrides: {
+      helmetConfig = generateHelmetConfigFromOverrides({
+        helmetConfigOverrides: {
           helmetColor: "#f00",
           facemaskColor: "#fff",
         },
@@ -285,25 +281,25 @@ applyValuesToGallerySectionConfigList(
 updateUrlHash(initialHelmetConfig);
 
 export const useHelmetStore = create<CombinedState>()((set) => ({
-  teamHelmetConfig: initialHelmetConfig,
-  setTeamHelmetConfig: (teamHelmetConfig) =>
+  helmetConfig: initialHelmetConfig,
+  setHelmetConfig: (helmetConfig) =>
     set((state: CombinedState) => {
       history.replaceState(
         undefined,
         "",
-        `#${btoa(JSON.stringify(teamHelmetConfig))}`
+        `#${btoa(JSON.stringify(helmetConfig))}`
       );
 
       applyValuesToGallerySectionConfigList(
         gallerySectionConfigList,
-        teamHelmetConfig
+        helmetConfig
       );
-      updateUrlHash(teamHelmetConfig);
+      updateUrlHash(helmetConfig);
 
       return {
         ...state,
         gallerySectionConfigList: [...gallerySectionConfigList],
-        teamHelmetConfig: { ...teamHelmetConfig },
+        helmetConfig: { ...helmetConfig },
       };
     }),
   gallerySectionConfigList,

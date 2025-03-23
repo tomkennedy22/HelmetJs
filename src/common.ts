@@ -1,4 +1,4 @@
-export const teamHelmetStyles = [
+export const helmetStyles = [
   "standard",
   "tiger-stripes",
   "winged",
@@ -7,9 +7,9 @@ export const teamHelmetStyles = [
 const baseColor = "#f00";
 const darkColor = "#272727";
 
-type TeamHelmetStyle = (typeof teamHelmetStyles)[number];
+type HelmetStyle = (typeof helmetStyles)[number];
 
-type TeamHelmetConfigBase = {
+type HelmetConfigBase = {
   flipHelmet: boolean;
   helmetColor: string;
   facemaskColor: string;
@@ -23,41 +23,41 @@ type TeamHelmetConfigBase = {
   flippedHelmetLogoUrl?: string;
 };
 
-type TeamHelmetStyleConfig = {
-  helmetStyle?: TeamHelmetStyle;
+type HelmetStyleConfig = {
+  helmetStyle?: HelmetStyle;
   tigerStripeColor?: string;
   wingColor?: string;
   hornColor?: string;
 };
 
-export type TeamHelmetConfig = TeamHelmetConfigBase & TeamHelmetStyleConfig;
+export type HelmetConfig = HelmetConfigBase & HelmetStyleConfig;
 
-export type TeamHelmetConfigOverrides = Partial<TeamHelmetConfig>;
+export type HelmetConfigOverrides = Partial<HelmetConfig>;
 
-export const generateTeamHelmetConfigFromOverrides = ({
-  teamHelmetConfigOverrides,
+export const generateHelmetConfigFromOverrides = ({
+  helmetConfigOverrides,
 }: {
-  teamHelmetConfigOverrides: TeamHelmetConfigOverrides;
-}): TeamHelmetConfig => {
-  const teamHelmetConfig: TeamHelmetConfig = {
-    flipHelmet: teamHelmetConfigOverrides?.flipHelmet || false,
-    helmetColor: teamHelmetConfigOverrides?.helmetColor || baseColor,
-    facemaskColor: teamHelmetConfigOverrides?.facemaskColor || darkColor,
-    helmetLogoUrl: teamHelmetConfigOverrides?.helmetLogoUrl || undefined,
-    xAdjust: teamHelmetConfigOverrides?.xAdjust || 0,
-    yAdjust: teamHelmetConfigOverrides?.yAdjust || 0,
-    disableLogo: teamHelmetConfigOverrides?.disableLogo || false,
-    flipLogoWithHelmet: teamHelmetConfigOverrides?.flipLogoWithHelmet || false,
+  helmetConfigOverrides: HelmetConfigOverrides;
+}): HelmetConfig => {
+  const helmetConfig: HelmetConfig = {
+    flipHelmet: helmetConfigOverrides?.flipHelmet || false,
+    helmetColor: helmetConfigOverrides?.helmetColor || baseColor,
+    facemaskColor: helmetConfigOverrides?.facemaskColor || darkColor,
+    helmetLogoUrl: helmetConfigOverrides?.helmetLogoUrl || undefined,
+    xAdjust: helmetConfigOverrides?.xAdjust || 0,
+    yAdjust: helmetConfigOverrides?.yAdjust || 0,
+    disableLogo: helmetConfigOverrides?.disableLogo || false,
+    flipLogoWithHelmet: helmetConfigOverrides?.flipLogoWithHelmet || false,
     useFlippedLogoUrlWhenFlipped:
-      teamHelmetConfigOverrides?.useFlippedLogoUrlWhenFlipped || false,
+      helmetConfigOverrides?.useFlippedLogoUrlWhenFlipped || false,
     flippedHelmetLogoUrl:
-      teamHelmetConfigOverrides?.flippedHelmetLogoUrl || undefined,
-    helmetStyle: teamHelmetConfigOverrides?.helmetStyle || "standard",
-    tigerStripeColor: teamHelmetConfigOverrides?.tigerStripeColor || darkColor,
-    wingColor: teamHelmetConfigOverrides?.wingColor || darkColor,
-    hornColor: teamHelmetConfigOverrides?.hornColor || darkColor,
-    helmetLogoScale: teamHelmetConfigOverrides?.helmetLogoScale || 1,
+      helmetConfigOverrides?.flippedHelmetLogoUrl || undefined,
+    helmetStyle: helmetConfigOverrides?.helmetStyle || "standard",
+    tigerStripeColor: helmetConfigOverrides?.tigerStripeColor || darkColor,
+    wingColor: helmetConfigOverrides?.wingColor || darkColor,
+    hornColor: helmetConfigOverrides?.hornColor || darkColor,
+    helmetLogoScale: helmetConfigOverrides?.helmetLogoScale || 1,
   };
 
-  return teamHelmetConfig;
+  return helmetConfig;
 };
