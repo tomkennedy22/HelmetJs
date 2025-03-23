@@ -2,7 +2,6 @@ import { type CSSProperties } from "react";
 import { Sketch } from "./Sketch";
 import { Button, PopoverTrigger, PopoverContent, Popover } from "@heroui/react";
 import { ColorFormat } from "./types";
-import React from "react";
 
 const rgbaObjToRgbaStr = (rgbaObj: {
   r: number;
