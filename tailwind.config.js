@@ -3,7 +3,9 @@ const { heroui } = require("@heroui/react");
 module.exports = {
   content: [
     "./public/**/*.{html,js,tsx,jsx,ts}",
+    "./public/*.{html,js,tsx,jsx,ts}",
     "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
+    "../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
