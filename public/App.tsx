@@ -25,8 +25,7 @@ import {
 const updateStores = ({
   teamHelmetConfig,
   stateStoreProps,
-}: // overrideList,
-{
+}: {
   teamHelmetConfig: TeamHelmetConfig;
   stateStoreProps: CombinedState;
   // overrideList: OverrideListItem[];
@@ -368,7 +367,7 @@ function App() {
     stateStoreProps;
 
   return (
-    <div className="flex flex-col h-screen bg-green-200">
+    <div className="flex flex-col h-screen">
       <TopBar />
       <div className="flex gap-8 w-screen mt-16 px-8">
         <div className="w-full flex flex-col overflow-y-scroll max-h-[90lvh]">
