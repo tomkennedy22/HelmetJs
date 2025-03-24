@@ -14,7 +14,7 @@ import {
   GallerySectionConfigOptions,
   OverrideListItem,
 } from "./types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   deepCopy,
   doesStrLookLikeColor,
@@ -22,6 +22,7 @@ import {
   roundTwoDecimals,
 } from "./utils";
 import { MainHelmet } from "./MainHelmet";
+import ReactGA from "react-ga4";
 
 const updateStores = ({
   helmetConfig,
@@ -331,6 +332,11 @@ function App() {
 
   const { helmetConfig, gallerySize, gallerySectionConfigList } =
     stateStoreProps;
+
+  useEffect(() => {
+    ReactGA.initialize("G-X4V71EMDVS");
+    ReactGA.send("pageview");
+  }, []);
 
   return (
     <div className="flex flex-col h-screen">
