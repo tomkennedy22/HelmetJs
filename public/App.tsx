@@ -111,12 +111,6 @@ const FeatureSelector = ({
   );
 
   if (gallerySectionConfig.selectionType === "options") {
-    console.log("options", {
-      gallerySectionConfig,
-      selectedVal,
-      helmetConfig,
-    });
-
     const optionsGallerySectionConfig =
       gallerySectionConfig as GallerySectionConfigOptions;
 
@@ -139,11 +133,6 @@ const FeatureSelector = ({
           }}>
           {optionsGallerySectionConfig.renderOptions.valuesToRender.map(
             (optionValue) => {
-              console.log("overrideToRun", {
-                optionValue,
-                overrideList,
-                optionsGallerySectionConfig,
-              });
               return (
                 <SelectItem key={String(optionValue)}>{optionValue}</SelectItem>
               );
@@ -248,20 +237,14 @@ const FeatureSelector = ({
 
     const colorInputOnChange = ({
       newColorValue,
-      hasMultipleColors,
+      // hasMultipleColors,
       colorIndex,
     }: {
       newColorValue: string;
       hasMultipleColors: boolean;
       colorIndex: number;
     }) => {
-      const colorLooksValid = doesStrLookLikeColor(newColorValue);
-      console.log("colorInputOnChange", {
-        newColorValue,
-        hasMultipleColors,
-        colorIndex,
-        colorLooksValid,
-      });
+      // const colorLooksValid = doesStrLookLikeColor(newColorValue);
 
       updateValidationAtIndex(colorIndex, doesStrLookLikeColor(newColorValue));
 
@@ -400,11 +383,6 @@ function App() {
                             }`}
                             onClick={() => {
                               const helmetConfigCopy = deepCopy(helmetConfig);
-
-                              console.log("set property", {
-                                helmetConfigCopy,
-                                overrideToRun,
-                              });
 
                               override(
                                 helmetConfigCopy,

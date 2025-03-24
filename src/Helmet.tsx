@@ -27,7 +27,6 @@ const HelmetLogo = ({ helmetConfig }: { helmetConfig: HelmetConfig }) => {
     (!helmetConfig.flipLogoWithHelmet ||
       helmetConfig.useFlippedLogoUrlWhenFlipped)
   ) {
-    console.log("Flipping helmet logo");
     imageAttrs.transformMap.scaleX = -1;
     imageAttrs.transformMap.scaleY = 1;
 
@@ -57,15 +56,6 @@ const HelmetLogo = ({ helmetConfig }: { helmetConfig: HelmetConfig }) => {
       ? helmetConfig.flippedHelmetLogoUrl
       : helmetConfig.helmetLogoUrl;
 
-  console.log("HelmetLogo", {
-    flipLogoWithHelmet: helmetConfig.flipLogoWithHelmet,
-    flippedHelmetLogoUrl: helmetConfig.flippedHelmetLogoUrl,
-    helmetConfig,
-    imageAttrs,
-    flipHelmet,
-    logoUrl,
-  });
-
   return (
     logoUrl && (
       <image
@@ -89,16 +79,9 @@ export const Helmet = forwardRef<
     lazy?: boolean;
     style?: CSSProperties;
   }
->(({ className, helmetConfig, ignoreDisplayErrors, lazy, style }, ref) => {
+>(({ className, helmetConfig, style }, ref) => {
   const flipHelmet = helmetConfig.flipHelmet;
   const flipHelmetTransform = flipHelmet ? "scale(-1, 1)" : undefined;
-
-  console.log("Helmet", {
-    helmetConfig,
-    flipHelmetTransform,
-    lazy,
-    ignoreDisplayErrors,
-  });
 
   return (
     <div

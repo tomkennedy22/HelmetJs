@@ -39,7 +39,7 @@ export const isValidJSON = (value: string): boolean => {
     JSON.parse(value);
     return true;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return false;
   }
 };

@@ -1,7 +1,7 @@
 import { HelmetConfig } from "../src";
 import { getCurrentTimestampAsString } from "./utils";
+import { toPng } from "html-to-image";
 
-// https://blog.logrocket.com/programmatically-downloading-files-browser/
 const downloadBlob = (blob: Blob, filename: string) => {
   const url = URL.createObjectURL(blob);
 
@@ -22,40 +22,19 @@ const downloadBlob = (blob: Blob, filename: string) => {
 };
 
 export const downloadHelmetPng = async (wrapper: HTMLDivElement) => {
-  const canvas = document.createElement("canvas");
-  canvas.width = 400;
-  canvas.height = 600;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) {
-    return;
-  }
+  const size = { width: 512, height: 460 };
+  const sizeAdjustedWrapper = wrapper.cloneNode(true) as HTMLDivElement;
 
-  // Without overriding these attributes, the export either fails or is weirdly sized
-  const svg = wrapper.children[0].cloneNode(true) as SVGSVGElement;
-  svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-  svg.setAttribute("width", `${canvas.width}`);
-  svg.setAttribute("height", `${canvas.height}`);
-  const svgString = svg.outerHTML;
+  sizeAdjustedWrapper.style.width = `${size.width}px`;
+  sizeAdjustedWrapper.style.height = `${size.height}px`;
 
-  const svgBlob = new Blob([svgString], {
-    type: "image/svg+xml;charset=utf-8",
+  const dataUrl = await toPng(sizeAdjustedWrapper, {
+    ...size,
+
+    quality: 0.5,
   });
-  const url = URL.createObjectURL(svgBlob);
-
-  const img = new Image();
-  img.width = canvas.width;
-  img.height = canvas.height;
-  img.addEventListener("load", function () {
-    ctx.drawImage(this, 0, 0);
-    URL.revokeObjectURL(url);
-
-    canvas.toBlob((blob) => {
-      if (blob) {
-        downloadBlob(blob, `helmetjs-${getCurrentTimestampAsString()}.png`);
-      }
-    });
-  });
-  img.src = url;
+  const blob = await fetch(dataUrl).then((res) => res.blob());
+  downloadBlob(blob, `helmetjs-${getCurrentTimestampAsString()}.png`);
 };
 
 export const downloadHelmetSvg = (wrapper: HTMLDivElement) => {

@@ -38,12 +38,6 @@ const MainHelmetActionBar = ({
   const acceptableBackgroundColor =
     helmetLuma < 0.6 ? helmetConfig.helmetColor : "black";
 
-  console.log("Colors", {
-    helmetColor,
-    helmetLuma,
-    acceptableBackgroundColor,
-  });
-
   const dropdownConfig = [
     {
       groupName: "Copy",

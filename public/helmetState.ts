@@ -215,14 +215,6 @@ const gallerySectionConfigList: GallerySectionConfig[] =
       const step = rangeConfig.step || roundTwoDecimals(range / numSteps);
       const sliderStep = Math.max(roundTwoDecimals(range / numSteps), 0.01);
 
-      console.log("Range", {
-        step,
-        sliderStep,
-        rangeConfig,
-        numSteps,
-        gallerySectionConfig,
-      });
-
       return {
         ...gallerySectionConfig,
         renderOptions: {
