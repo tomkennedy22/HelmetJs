@@ -2,6 +2,7 @@ import { create } from "zustand";
 import {
   generateHelmetConfigFromOverrides,
   HelmetConfig,
+  HelmetConfigOverrides,
   helmetStyles,
 } from "../src";
 import {
@@ -12,7 +13,40 @@ import {
   Overrides,
 } from "./types";
 import { getProperty, setProperty } from "dot-prop";
-import { roundTwoDecimals } from "./utils";
+import { pickRandom, roundTwoDecimals } from "./utils";
+
+const defaultColorSelects = [
+  "#9D2235",
+  "#C82F04",
+  "#FEE11A",
+  "#1C453A",
+  "#013088",
+  "#2D68C4",
+  "#4E2A84",
+  "#272727",
+  "#ccc",
+  "#fff",
+];
+
+export const initialHelmetOptions: HelmetConfigOverrides[] = [
+  { helmetColor: "#9D2235", facemaskColor: "#FFC72C" },
+  { helmetColor: "#7A0019", facemaskColor: "#FBB246" },
+  {
+    helmetColor: "#272727",
+    facemaskColor: "#fb4f14",
+    helmetStyle: "Tiger Stripe",
+  },
+  { helmetColor: "#FFFFFF", facemaskColor: "#151F49" },
+  { helmetColor: "#1C453A", facemaskColor: "#fff", helmetStyle: "Wing" },
+  { helmetColor: "#2D68C4", facemaskColor: "#F2A900" },
+  { helmetColor: "#4E2A84", facemaskColor: "#ccc", helmetStyle: "Horn" },
+];
+
+initialHelmetOptions.forEach((helmetConfigOverrides) => {
+  helmetConfigOverrides.hornColor = helmetConfigOverrides.facemaskColor;
+  helmetConfigOverrides.wingColor = helmetConfigOverrides.facemaskColor;
+  helmetConfigOverrides.tigerStripeColor = helmetConfigOverrides.facemaskColor;
+});
 
 const gallerySectionInfos: (Pick<
   GallerySectionConfig,
@@ -70,7 +104,7 @@ const gallerySectionInfos: (Pick<
     selectionType: "color",
     colorFormat: "hex",
     renderOptions: {
-      valuesToRender: ["#f00", "#0f0", "#00f"],
+      valuesToRender: defaultColorSelects,
     },
   },
   {
@@ -79,7 +113,7 @@ const gallerySectionInfos: (Pick<
     selectionType: "color",
     colorFormat: "hex",
     renderOptions: {
-      valuesToRender: ["#f00", "#0f0", "#00f"],
+      valuesToRender: defaultColorSelects,
     },
   },
   {
@@ -97,7 +131,7 @@ const gallerySectionInfos: (Pick<
     selectionType: "color",
     colorFormat: "hex",
     renderOptions: {
-      valuesToRender: ["#f00", "#0f0", "#00f"],
+      valuesToRender: defaultColorSelects,
     },
     enableDisplayFn: (helmetConfig: HelmetConfig) =>
       helmetConfig.helmetStyle === "Tiger Stripe",
@@ -108,7 +142,7 @@ const gallerySectionInfos: (Pick<
     selectionType: "color",
     colorFormat: "hex",
     renderOptions: {
-      valuesToRender: ["#f00", "#0f0", "#00f"],
+      valuesToRender: defaultColorSelects,
     },
     enableDisplayFn: (helmetConfig: HelmetConfig) =>
       helmetConfig.helmetStyle === "Wing",
@@ -119,7 +153,7 @@ const gallerySectionInfos: (Pick<
     selectionType: "color",
     colorFormat: "hex",
     renderOptions: {
-      valuesToRender: ["#f00", "#0f0", "#00f"],
+      valuesToRender: defaultColorSelects,
     },
     enableDisplayFn: (helmetConfig: HelmetConfig) =>
       helmetConfig.helmetStyle === "Horn",
@@ -276,9 +310,11 @@ const updateUrlHash = (helmetConfig: HelmetConfig) => {
 
 const generateInitialHelmetConfig = () => {
   let helmetConfig: HelmetConfig;
+  const helmetConfigOverrides = pickRandom(initialHelmetOptions);
+
   if (location.hash.length <= 1) {
     helmetConfig = generateHelmetConfigFromOverrides({
-      helmetConfigOverrides: {},
+      helmetConfigOverrides,
     });
   } else {
     try {
@@ -286,7 +322,7 @@ const generateInitialHelmetConfig = () => {
     } catch (error) {
       console.error(error);
       helmetConfig = generateHelmetConfigFromOverrides({
-        helmetConfigOverrides: {},
+        helmetConfigOverrides,
       });
     }
   }
