@@ -17,10 +17,13 @@ type HelmetConfigBase = {
   xAdjust: number;
   yAdjust: number;
   helmetLogoScale: number;
-  disableLogo: boolean;
+  enableLogo: boolean;
   useFlippedLogoUrlWhenFlipped: boolean;
   flipLogoWithHelmet: boolean;
   flippedHelmetLogoUrl?: string;
+  enableHelmetStickers: boolean;
+  helmetStickerUrl?: string;
+  numHelmetStickers?: number;
 };
 
 type HelmetStyleConfig = {
@@ -46,7 +49,7 @@ export const generateHelmetConfigFromOverrides = ({
     helmetLogoUrl: helmetConfigOverrides?.helmetLogoUrl || undefined,
     xAdjust: helmetConfigOverrides?.xAdjust || 0,
     yAdjust: helmetConfigOverrides?.yAdjust || 0,
-    disableLogo: helmetConfigOverrides?.disableLogo || false,
+    enableLogo: helmetConfigOverrides?.enableLogo || false,
     flipLogoWithHelmet: helmetConfigOverrides?.flipLogoWithHelmet || false,
     useFlippedLogoUrlWhenFlipped:
       helmetConfigOverrides?.useFlippedLogoUrlWhenFlipped || false,
@@ -57,6 +60,9 @@ export const generateHelmetConfigFromOverrides = ({
     wingColor: helmetConfigOverrides?.wingColor || darkColor,
     hornColor: helmetConfigOverrides?.hornColor || darkColor,
     helmetLogoScale: helmetConfigOverrides?.helmetLogoScale || 1,
+    enableHelmetStickers: helmetConfigOverrides?.enableHelmetStickers || false,
+    helmetStickerUrl: helmetConfigOverrides?.helmetStickerUrl || undefined,
+    numHelmetStickers: helmetConfigOverrides?.numHelmetStickers || 5,
   };
 
   return helmetConfig;

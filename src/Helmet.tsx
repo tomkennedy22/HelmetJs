@@ -1,8 +1,57 @@
 import { CSSProperties, forwardRef } from "react";
 import { HelmetConfig } from "./common";
 
+const HelmetStickers = ({ helmetConfig }: { helmetConfig: HelmetConfig }) => {
+  if (
+    !helmetConfig.enableHelmetStickers ||
+    !helmetConfig.helmetStickerUrl ||
+    !helmetConfig.helmetStickerUrl.length ||
+    !helmetConfig.numHelmetStickers ||
+    helmetConfig.numHelmetStickers <= 0
+  ) {
+    return null;
+  }
+
+  const stickerCoordinates = [
+    { x: 25, y: 250 },
+    { x: 55, y: 260 },
+    { x: 20, y: 220 },
+    { x: 50, y: 230 },
+    { x: 80, y: 240 },
+    { x: 110, y: 250 },
+    { x: 85, y: 270 },
+    { x: 115, y: 280 },
+    { x: 18, y: 190 },
+    { x: 48, y: 200 },
+    { x: 78, y: 210 },
+    { x: 108, y: 220 },
+
+    { x: 145, y: 290 },
+    { x: 175, y: 300 },
+  ];
+
+  const slicedStickerCoordinates = stickerCoordinates.slice(
+    0,
+    helmetConfig.numHelmetStickers
+  );
+
+  return (
+    <g>
+      {slicedStickerCoordinates.map((stickerCoordinate) => (
+        <image
+          href={helmetConfig.helmetStickerUrl}
+          x={stickerCoordinate.x}
+          y={stickerCoordinate.y}
+          height={30}
+          width={30}
+        />
+      ))}
+    </g>
+  );
+};
+
 const HelmetLogo = ({ helmetConfig }: { helmetConfig: HelmetConfig }) => {
-  if (helmetConfig.disableLogo) {
+  if (!helmetConfig.enableLogo) {
     return null;
   }
 
@@ -155,6 +204,7 @@ export const Helmet = forwardRef<
               />
             )}
             <HelmetLogo helmetConfig={helmetConfig} />
+            <HelmetStickers helmetConfig={helmetConfig} />
             <path
               d="M347.886,429.619L346.732,430.782L327.945,431.913L311.376,429.996L290.809,427.74L266.545,416.471L238.047,398.92L210.566,375.866L186.374,362.062L157.704,325.769L155.245,321.306C158.368,309.658 163.242,309.493 168.5,311.842L180.975,320.009L213.765,352.31L245.564,379.357L275.252,397.546L288.104,404.811L299.197,406.905L322.493,411.786L335.053,411.024L331.379,405.701L330.242,393.424L337.14,381.047L349.804,359.664L384.651,362.085L394.54,369.49L398.992,387.642L397.5,402.019L390.878,414.449L380.555,427.629L371.143,433.267L361.345,436.336L350.479,433.375L347.886,429.619ZM20.086,282.563L65.542,294.043L119.981,317.649C130.224,326.259 132.254,332.359 131.13,337.496L78.059,334.694L54.876,335.616L34.892,331.289L25.936,312.509L21.645,293.001L20.086,282.563ZM357.287,321.279L347.183,334.244L334.322,328.095L317.23,284.294L288.862,255.099L238.896,214.01L218.445,215.533L218.978,198.903L212.669,195.542L207.659,188.957L211.159,179.002L218.953,177.769L251.813,200.184L257.564,202.053L262.151,197.819L264.555,192.46L266.588,185.947L288.34,190.221L310.3,202.324L320.368,216.94L314.946,230.705L294.735,233.305L308.275,246.423L323.711,263.605L340.685,287.415L357.287,321.279ZM430.481,187.242L415.037,183.754L410.302,177.372L410.476,158.169L418.959,154.071L422.332,163.176L426.562,181.65L430.481,187.242ZM323.343,373.201L312.265,374.051L304.985,371.826L292.914,367.08L281.841,358.464L277.243,352.465L282.517,348.502L282.416,343.121L285.861,338.784L287.102,334.153L298.352,336.154L313.394,340.127L325.884,348.462L332.231,356.776L323.343,373.201Z"
               fill="white"

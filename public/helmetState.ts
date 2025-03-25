@@ -32,14 +32,32 @@ export const initialHelmetOptions: HelmetConfigOverrides[] = [
   { helmetColor: "#9D2235", facemaskColor: "#FFC72C" },
   { helmetColor: "#7A0019", facemaskColor: "#FBB246" },
   {
+    helmetColor: "#b0b7bc",
+    facemaskColor: "#b0b7bc",
+    enableHelmetStickers: true,
+    helmetStickerUrl:
+      "https://images.vexels.com/media/users/3/136075/isolated/svg/6a457a40b2d0a63d65c34d26f3cc41a8.svg",
+  },
+  {
     helmetColor: "#272727",
     facemaskColor: "#fb4f14",
     helmetStyle: "Tiger Stripe",
+    enableLogo: false,
   },
-  { helmetColor: "#FFFFFF", facemaskColor: "#151F49" },
-  { helmetColor: "#1C453A", facemaskColor: "#fff", helmetStyle: "Wing" },
+  { helmetColor: "#FFFFFF", facemaskColor: "#151F49", enableLogo: true },
+  {
+    helmetColor: "#1C453A",
+    facemaskColor: "#fff",
+    helmetStyle: "Wing",
+    enableLogo: false,
+  },
   { helmetColor: "#2D68C4", facemaskColor: "#F2A900" },
-  { helmetColor: "#4E2A84", facemaskColor: "#ccc", helmetStyle: "Horn" },
+  {
+    helmetColor: "#4E2A84",
+    facemaskColor: "#ccc",
+    helmetStyle: "Horn",
+    enableLogo: false,
+  },
 ];
 
 initialHelmetOptions.forEach((helmetConfigOverrides) => {
@@ -159,15 +177,15 @@ const gallerySectionInfos: (Pick<
       helmetConfig.helmetStyle === "Horn",
   },
   {
-    key: "disableLogo",
-    text: "Disable Logo",
+    key: "enableLogo",
+    text: "Enable Logo",
     selectionType: "toggle",
   },
   {
     key: "helmetLogoUrl",
     text: "Helmet Logo URL",
     selectionType: "text",
-    enableDisplayFn: (helmetConfig: HelmetConfig) => !helmetConfig.disableLogo,
+    enableDisplayFn: (helmetConfig: HelmetConfig) => helmetConfig.enableLogo,
   },
   {
     key: "flipHelmet",
@@ -179,19 +197,19 @@ const gallerySectionInfos: (Pick<
     text: "Flip Logo With Helmet",
     selectionType: "toggle",
     defaultValue: true,
-    enableDisplayFn: (helmetConfig: HelmetConfig) => !helmetConfig.disableLogo,
+    enableDisplayFn: (helmetConfig: HelmetConfig) => helmetConfig.enableLogo,
   },
   {
     key: "useFlippedLogoUrlWhenFlipped",
     text: "Use Flipped Logo URL When Flipped",
     selectionType: "toggle",
-    enableDisplayFn: (helmetConfig: HelmetConfig) => !helmetConfig.disableLogo,
+    enableDisplayFn: (helmetConfig: HelmetConfig) => helmetConfig.enableLogo,
   },
   {
     key: "flippedHelmetLogoUrl",
     text: "Flipped Helmet Logo URL",
     selectionType: "text",
-    enableDisplayFn: (helmetConfig: HelmetConfig) => !helmetConfig.disableLogo,
+    enableDisplayFn: (helmetConfig: HelmetConfig) => helmetConfig.enableLogo,
   },
   {
     key: "helmetLogoScale",
@@ -205,7 +223,7 @@ const gallerySectionInfos: (Pick<
         step: 0.1,
       },
     },
-    enableDisplayFn: (helmetConfig: HelmetConfig) => !helmetConfig.disableLogo,
+    enableDisplayFn: (helmetConfig: HelmetConfig) => helmetConfig.enableLogo,
   },
   {
     key: "xAdjust",
@@ -219,7 +237,7 @@ const gallerySectionInfos: (Pick<
         step: 1,
       },
     },
-    enableDisplayFn: (helmetConfig: HelmetConfig) => !helmetConfig.disableLogo,
+    enableDisplayFn: (helmetConfig: HelmetConfig) => helmetConfig.enableLogo,
   },
   {
     key: "yAdjust",
@@ -233,7 +251,34 @@ const gallerySectionInfos: (Pick<
         step: 1,
       },
     },
-    enableDisplayFn: (helmetConfig: HelmetConfig) => !helmetConfig.disableLogo,
+    enableDisplayFn: (helmetConfig: HelmetConfig) => helmetConfig.enableLogo,
+  },
+  {
+    key: "enableHelmetStickers",
+    text: "Enable Helmet Stickers",
+    selectionType: "toggle",
+  },
+  {
+    key: "numHelmetStickers",
+    text: "Number of Helmet Stickers",
+    selectionType: "range",
+    defaultValue: 5,
+    renderOptions: {
+      rangeConfig: {
+        min: 1,
+        max: 50,
+        step: 1,
+      },
+    },
+    enableDisplayFn: (helmetConfig: HelmetConfig) =>
+      helmetConfig.enableHelmetStickers,
+  },
+  {
+    key: "helmetStickerUrl",
+    text: "Helmet Sticker URL",
+    selectionType: "text",
+    enableDisplayFn: (helmetConfig: HelmetConfig) =>
+      helmetConfig.enableHelmetStickers,
   },
 ];
 
