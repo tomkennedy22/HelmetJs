@@ -341,8 +341,8 @@ function App() {
   return (
     <div className="flex flex-col h-screen">
       <TopBar />
-      <div className="flex gap-8 w-screen mt-16 px-8">
-        <div className="w-full flex-1 overflow-y-scroll max-h-[90lvh] h-min grid grid-cols-2">
+      <main className="flex gap-8 w-screen mt-16 px-8">
+        <section className="w-full flex-1 overflow-y-scroll max-h-[90lvh] h-min grid grid-cols-2">
           {gallerySectionConfigList.map(
             (gallerySectionConfig, sectionIndex) => {
               const overrideList = getOverrideListForItem(gallerySectionConfig);
@@ -410,9 +410,9 @@ function App() {
               );
             }
           )}
-        </div>
+        </section>
         <MainHelmet className="flex-1" />
-      </div>
+      </main>
     </div>
   );
 }

@@ -1,5 +1,10 @@
 import { Button } from "@heroui/react";
-import { ArrowsClockwise, GithubLogo, Star } from "@phosphor-icons/react";
+import {
+  ArrowsClockwise,
+  FootballHelmet,
+  GithubLogo,
+  Star,
+} from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import { initialHelmetOptions, useHelmetStore } from "./helmetState";
 import { pickRandom } from "./utils";
@@ -66,7 +71,13 @@ export const TopBar = () => {
 
   return (
     <div className="bg-slate-800 text-white flex justify-between w-screen fixed z-50 py-2 px-8 items-center text-center text-xl">
-      <span className="hidden md:inline mr-4 ">HelmetJs editor</span>
+      <div className="flex gap-1 text-center items-center">
+        <FootballHelmet
+          size={24}
+          weight="duotone"
+        />
+        <span className="hidden md:inline mr-4 ">HelmetJs editor</span>
+      </div>
       <Button
         isIconOnly
         className="rounded-md text-white"
