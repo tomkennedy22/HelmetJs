@@ -341,8 +341,8 @@ function App() {
   return (
     <div className="flex flex-col h-screen">
       <TopBar />
-      <main className="flex gap-8 w-screen mt-16 px-8">
-        <section className="w-full flex-1 overflow-y-scroll max-h-[90lvh] h-min grid grid-cols-2">
+      <main className="flex flex-col-reverse md:flex-row items-center md:items-start gap-8 w-screen mt-16 px-8">
+        <section className="w-full flex-1 overflow-y-scroll max-w-screen overflow-x-hidden max-h-[90lvh] h-min grid grid-cols-2">
           {gallerySectionConfigList.map(
             (gallerySectionConfig, sectionIndex) => {
               const overrideList = getOverrideListForItem(gallerySectionConfig);

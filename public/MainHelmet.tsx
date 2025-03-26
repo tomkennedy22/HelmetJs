@@ -127,7 +127,7 @@ const MainHelmetActionBar = ({
               style={buttonStyle}
               title={group.groupName}>
               <>
-                <span>{group.groupName}</span>
+                <span className="md:block hidden">{group.groupName}</span>
                 {group.groupIcon}
               </>
             </Button>

@@ -34,6 +34,7 @@ export const initialHelmetOptions: HelmetConfigOverrides[] = [
   {
     helmetColor: "#b0b7bc",
     facemaskColor: "#b0b7bc",
+    enableLogo: false,
     enableHelmetStickers: true,
     helmetStickerUrl:
       "https://images.vexels.com/media/users/3/136075/isolated/svg/6a457a40b2d0a63d65c34d26f3cc41a8.svg",
@@ -44,7 +45,7 @@ export const initialHelmetOptions: HelmetConfigOverrides[] = [
     helmetStyle: "Tiger Stripe",
     enableLogo: false,
   },
-  { helmetColor: "#FFFFFF", facemaskColor: "#151F49", enableLogo: true },
+  { helmetColor: "#FFFFFF", facemaskColor: "#151F49", enableLogo: false },
   {
     helmetColor: "#1C453A",
     facemaskColor: "#fff",
