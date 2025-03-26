@@ -1,9 +1,16 @@
 {
   "name": "helmetjs",
   "private": false,
-  "version": "0.1.0",
+  "version": "0.1.3",
   "type": "module",
   "homepage": "https://tomkennedy22.github.io/HelmetJs/",
+  "files": [
+    "src/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tomkennedy22/HelmetJs.git"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
