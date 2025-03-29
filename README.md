@@ -1,4 +1,4 @@
-HelmetJs is a React package to generate a football helmet given a user's input. It also has a free editor at https://tomkennedy22.github.io/HelmetJs
+HelmetJs is a React package to generate a football helmet given a user's input. It also has a free editor at https://tomkennedy22.github.io/Helmet
 
 ### Using in TSX
 
