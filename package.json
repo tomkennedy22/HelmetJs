@@ -1,7 +1,7 @@
 {
 	"name": "helmetjs",
 	"private": false,
-	"version": "0.2.1",
+	"version": "0.2.2",
 	"scripts": {
 		"build": "rm -rf dist && tsup src/index.ts --format esm,cjs --dts",
 		"dev": "tsup src/index.ts --format esm,cjs --dts --watch",
