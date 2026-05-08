@@ -1,13 +1,15 @@
 {
   "name": "helmetjs",
   "private": false,
-  "version": "0.1.6",
+  "version": "0.2.0",
   "scripts": {
     "build": "rm -rf dist && tsup src/index.ts --format esm,cjs --dts",
+    "dev": "tsup src/index.ts --format esm,cjs --dts --watch",
+    "clean": "rm -rf dist",
     "prepublishOnly": "npm run build"
   },
   "homepage": "https://tomkennedy22.github.io/HelmetJs/",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "exports": {
@@ -24,18 +26,18 @@
     "type": "git",
     "url": "git+https://github.com/tomkennedy22/HelmetJs.git"
   },
-  "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.3.11",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
-    "eslint": "^9.21.0",
-    "eslint-plugin-react-hooks": "^5.1.0",
     "globals": "^15.15.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "tsup": "^8.0.0",
-    "typescript": "~5.7.2",
-    "typescript-eslint": "^8.24.1"
+    "typescript": "~5.7.2"
   }
 }
